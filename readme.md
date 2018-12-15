@@ -1,3 +1,5 @@
+I used Hexahedria's [Github repo](https://github.com/hexahedria/biaxial-rnn-music-composition) for my senior comps. The original README can be found below.
+
 # Biaxial Recurrent Neural Network for Music Composition
 
 This code implements a recurrent neural network trained to generate classical music. The model, which uses LSTM layers and draws inspiration from convolutional neural networks, learns to predict which notes will be played at each time step of a musical piece.

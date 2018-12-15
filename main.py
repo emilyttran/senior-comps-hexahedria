@@ -1,4 +1,4 @@
-import _pickle as pickle
+import pickle 
 import os
 import errno
 from midi_to_statematrix import *
@@ -41,6 +41,7 @@ def fetch_train_thoughts(m, pcs, batches, name="trainthoughts"):
 
 def create_output_file(name):
     directory_path = "output/" + name
+    print(directory_path)
     print(os.path.exists(directory_path))
     if not os.path.exists(directory_path):
         try:
@@ -49,14 +50,19 @@ def create_output_file(name):
             if exc.errno != errno.EEXIST:
                 raise
 
-def run_training(genre, size):
-    name = genre + "_" + str(size)
+def run_training(genre, percentage_of_data):
+    name = genre + "_" + str(percentage_of_data)
+
     create_output_file(name)
-    pcs = multi_training.loadPieces(genre)
+    pcs = multi_training.loadPieces("data/" + genre, percentage_of_data)
+    print("Loaded")
     m = model.Model([300, 300], [100, 50], dropout=0.5)
-    multi_training.trainPiece(m, pcs, 10000, output_name= name)
+    print("Built model")
+    m.learned_config = pickle.load(open( "output/mozart_20_clustering/params7000.p", "rb" ) )
+    #print("Loaded weights")
+    #multi_training.trainPiece(m, pcs, 7000, output_dir=name)
+    print("Trained model")
     gen_adaptive(m, pcs, 10, name=name)
-    pickle.dump(m.learned_config, open("path_to_weight_file.p", "wb"))
 
 
 if __name__ == '__main__':
@@ -66,3 +72,8 @@ if __name__ == '__main__':
 #    multi_training.trainPiece(m, pcs, 10000)
 #    gen_adaptive(m, pcs, 10, name="composition")
 #    pickle.dump(m.learned_config, open("path_to_weight_file.p", "wb"))
+    #m.learned_config = pickle.load(open( "output/mozart_20_clustering_params7000.p", "rb" ) )
+   # gen_adaptive(m, pcs, 10, name="composition")
+
+
+
